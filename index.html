@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aslam Rizky Fadillah — Software Engineer</title>
+<meta name="description" content="Portofolio Aslam Rizky Fadillah — Software Engineering Student & Game-Tech Enthusiast.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/devicon/2.15.1/devicon.min.css">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.21/vue.global.prod.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+  <div class="cursor-dot" :style="dotStyle"></div>
+  <div class="cursor-ring" :class="{hovering:isHovering}" :style="ringStyle"></div>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow g1"></div>
+  <div class="bg-glow g2"></div>
+
+  <!-- NAVBAR -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="#home" class="logo"><span class="br">&lt;</span>ARF<span class="br">/&gt;</span></a>
+      <nav class="nav-links">
+        <a href="#home" :class="{active:activeSection==='home'}">Home</a>
+        <a href="#about" :class="{active:activeSection==='about'}">About</a>
+        <a href="#experience" :class="{active:activeSection==='experience'}">Experience</a>
+        <a href="#portfolio" :class="{active:activeSection==='portfolio'}">Portfolio</a>
+        <a href="#contact" :class="{active:activeSection==='contact'}">Contact</a>
+      </nav>
+      <div class="nav-right">
+        <div class="theme-toggle" @click="toggleTheme"><div class="knob"></div></div>
+        <div class="burger" @click="menuOpen = !menuOpen">
+          <span :style="menuOpen ? 'transform:translateY(7px) rotate(45deg)' : ''"></span>
+          <span :style="menuOpen ? 'opacity:0' : ''"></span>
+          <span :style="menuOpen ? 'transform:translateY(-7px) rotate(-45deg)' : ''"></span>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-menu" :class="{open:menuOpen}">
+      <a href="#home" @click="menuOpen=false" :class="{active:activeSection==='home'}">Home</a>
+      <a href="#about" @click="menuOpen=false" :class="{active:activeSection==='about'}">About</a>
+      <a href="#experience" @click="menuOpen=false" :class="{active:activeSection==='experience'}">Experience</a>
+      <a href="#portfolio" @click="menuOpen=false" :class="{active:activeSection==='portfolio'}">Portfolio</a>
+      <a href="#contact" @click="menuOpen=false" :class="{active:activeSection==='contact'}">Contact</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-bigtext" aria-hidden="true">DEVELOPER</div>
+
+      <div class="hero-visual">
+        <div class="hero-photo-glow"></div>
+        <div class="hero-photo"><img src="img/profile-hd.png" alt="Aslam Rizky Fadillah"></div>
+        <div class="hero-overlay-text">
+          <div class="eyebrow">Software Engineering Student</div>
+          <h1 class="hero-name">Aslam Rizky<br><span class="hl">Fadillah</span></h1>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <p class="hero-tagline">// Membangun antarmuka & sistem dengan presisi seorang developer, dan rasa ingin tahu seorang gamer terhadap teknologi.</p>
+        <div class="hero-cta">
+          <a href="#portfolio" class="btn btn-primary" data-hover>Lihat Portofolio</a>
+          <a :href="cvHref" download="CV_Aslam_Rizky_Fadillah.pdf" class="btn btn-outline" data-hover>Unduh CV</a>
+        </div>
+      </div>
+
+      <div class="hero-social hero-social-vertical">
+        <a href="https://github.com/aslamrizky" target="_blank" rel="noopener" data-hover><i class="devicon-github-original"></i></a>
+        <a href="mailto:aslamrizky81@gmail.com" data-hover><i class="fa-envelope">@</i></a>
+        <a href="https://instagram.com/aslam.rizky04" target="_blank" rel="noopener" data-hover>IG</a>
+      </div>
+    </div>
+    <div class="scroll-cue"><span>SCROLL</span><div class="line"></div></div>
+  </section>
+
+  <!-- STATS -->
+  <section style="padding-top:0; padding-bottom:60px;">
+    <div class="wrap reveal" id="stats-reveal">
+      <div class="scanline"></div>
+      <div class="stats-bar">
+        <div class="stat-cell"><div class="stat-num">{{ statsCount.sem }}</div><div class="stat-label">Semester</div></div>
+        <div class="stat-cell"><div class="stat-num">{{ statsCount.proj }}+</div><div class="stat-label">Proyek</div></div>
+        <div class="stat-cell"><div class="stat-num">{{ statsCount.stack }}+</div><div class="stat-label">Tech Stack</div></div>
+        <div class="stat-cell"><div class="stat-num">{{ statsCount.org }}</div><div class="stat-label">Organisasi</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap">
+      <div class="eyebrow reveal">Tentang Saya</div>
+      <h2 class="sec-title reveal">Profil Ringkas</h2>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <div class="scanline"></div>
+          <p>Mahasiswa <strong>Software Engineering</strong> di Telkom University yang bersemangat dalam pengembangan <strong>front-end</strong> dan eksplorasi berbagai bahasa pemrograman.</p>
+          <p>Tertarik pada persimpangan antara <strong>rekayasa perangkat lunak</strong> dan <strong>teknologi game</strong> — menyukai sistem yang terstruktur rapi seperti mekanik game yang baik: jelas, responsif, dan menyenangkan digunakan.</p>
+          <p>Berkomitmen untuk terus berkembang, berkolaborasi dalam tim, dan menghadirkan solusi yang berdampak nyata.</p>
+
+          <div class="edu-card">
+            <div class="deg">Sarjana Software Engineering</div>
+            <div class="sch">Telkom University, Bandung</div>
+            <div class="yr">2023 — Sekarang &nbsp;·&nbsp; Semester 6</div>
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="scanline"></div>
+          <p style="font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; color:var(--text-tertiary); text-transform:uppercase; margin-bottom:14px;">Core Skills</p>
+          <div class="skill-cloud">
+            <div class="skill-chip" v-for="s in coreSkills" :key="s">{{ s }}</div>
+          </div>
+          <p style="font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; color:var(--text-tertiary); text-transform:uppercase; margin:28px 0 14px;">Soft Skills</p>
+          <div class="skill-cloud">
+            <div class="skill-chip" v-for="s in softSkills" :key="s">{{ s }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="eyebrow reveal">Rekam Jejak</div>
+      <h2 class="sec-title reveal">Pengalaman</h2>
+      <p class="sec-sub reveal">Perjalanan kontribusi dan pembelajaran praktis selama masa studi.</p>
+      <div class="timeline reveal-stagger" id="tl-reveal">
+        <div class="tl-item" v-for="exp in experience" :key="exp.role">
+          <div class="tl-dot"></div>
+          <div class="tl-year">{{ exp.year }}</div>
+          <div class="tl-role">{{ exp.role }}</div>
+          <div class="tl-org">{{ exp.org }}</div>
+          <div class="tl-desc">{{ exp.desc }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <div class="wrap">
+      <div class="eyebrow reveal">Portfolio Showcase</div>
+      <h2 class="sec-title reveal">Karya &amp; Keahlian</h2>
+      <p class="sec-sub reveal">Jelajahi proyek yang telah dibangun, tumpukan teknologi yang digunakan sehari-hari, serta sertifikat yang pernah diraih.</p>
+
+      <div class="tab-switch reveal">
+        <button class="tab-btn" :class="{active:activeTab==='projects'}" @click="activeTab='projects'" data-hover>Projects</button>
+        <button class="tab-btn" :class="{active:activeTab==='techstack'}" @click="activeTab='techstack'" data-hover>Tech Stack</button>
+        <button class="tab-btn" :class="{active:activeTab==='certificates'}" @click="activeTab='certificates'" data-hover>Sertifikat</button>
+      </div>
+
+      <transition name="fade-tab" mode="out-in">
+        <div class="project-grid" v-if="activeTab==='projects'" key="p">
+          <div class="proj-card" v-for="p in projects" :key="p.title" @click="openProject(p)" data-hover>
+            <div class="proj-cover"><img :src="p.image" :alt="p.title" loading="lazy"></div>
+            <div class="proj-body">
+              <div class="proj-title">{{ p.title }}</div>
+              <div class="proj-desc">{{ p.desc }}</div>
+              <div class="proj-tech-icons">
+                <div class="tech-icon-badge" v-for="t in p.tech" :key="t.name" :title="t.name"><i :class="t.icon"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tech-marquee" v-else-if="activeTab==='techstack'" key="t">
+          <div class="tech-row" :class="row.dir" v-for="(row, idx) in techRows" :key="idx">
+            <div class="tech-row-track">
+              <div class="tech-tile" v-for="t in row.items" :key="t.name+'-a'">
+                <i :class="t.icon"></i>
+                <span>{{ t.name }}</span>
+              </div>
+              <div class="tech-tile" v-for="t in row.items" :key="t.name+'-b'" aria-hidden="true">
+                <i :class="t.icon"></i>
+                <span>{{ t.name }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cert-grid" v-else key="c">
+          <div class="cert-card" v-for="c in certificates" :key="c.title" @click="openLightbox(c.image)" data-hover>
+            <div class="cert-cover"><img :src="c.image" :alt="c.title" loading="lazy"></div>
+            <div class="cert-body">
+              <div class="cert-title">{{ c.title }}</div>
+              <div class="cert-org">{{ c.org }}</div>
+              <div class="cert-year">{{ c.year }}</div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
+  </section>
+
+  <!-- PROJECT DETAIL DRAWER -->
+  <div class="drawer-backdrop" :class="{show:selectedProject}" @click="closeProject"></div>
+  <aside class="drawer-panel" :class="{show:selectedProject}">
+    <template v-if="selectedProject">
+      <button class="drawer-close" @click="closeProject" data-hover>&times;</button>
+      <img class="drawer-image" :src="selectedProject.image" :alt="selectedProject.title">
+      <div class="drawer-body">
+        <div class="drawer-eyebrow">Detail Proyek</div>
+        <h3 class="drawer-title">{{ selectedProject.title }}</h3>
+        <p class="drawer-desc">{{ selectedProject.fullDesc }}</p>
+        <div class="drawer-tech-label">Tech Stack</div>
+        <div class="drawer-tech-row">
+          <div class="drawer-tech-item" v-for="t in selectedProject.tech" :key="t.name">
+            <div class="icon-wrap"><i :class="t.icon"></i></div>
+            <span>{{ t.name }}</span>
+          </div>
+        </div>
+      </div>
+    </template>
+  </aside>
+
+  <!-- CERTIFICATE LIGHTBOX -->
+  <div class="lightbox" :class="{show:lightboxImage}" @click="closeLightbox">
+    <button class="lightbox-close" @click.stop="closeLightbox" data-hover>&times;</button>
+    <img v-if="lightboxImage" :src="lightboxImage" alt="Sertifikat">
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="eyebrow reveal">Hubungi Saya</div>
+      <h2 class="sec-title reveal">Contact</h2>
+      <p class="sec-sub reveal">Terbuka untuk kolaborasi proyek, kesempatan magang, atau sekadar berdiskusi seputar teknologi.</p>
+
+      <div class="contact-grid reveal">
+        <div class="scanline"></div>
+        <form class="panel" @submit.prevent="sendMessage">
+          <h3>Kirim Pesan</h3>
+          <p class="hint">Isi form di bawah — pesan akan terkirim langsung melalui email.</p>
+          <div class="field">
+            <label>Nama</label>
+            <input type="text" v-model="form.name" required placeholder="Nama kamu">
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" v-model="form.email" required placeholder="email@contoh.com">
+          </div>
+          <div class="field">
+            <label>Pesan</label>
+            <textarea v-model="form.message" required placeholder="Tulis pesan di sini..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;" data-hover>Kirim Pesan</button>
+        </form>
+
+        <div class="contact-side">
+          <div class="panel">
+            <h3>Info Kontak</h3>
+            <div style="display:flex; flex-direction:column; gap:18px; margin-top:22px;">
+              <div class="info-row">
+                <div class="info-icon">@</div>
+                <div><div class="label">Email</div><div class="val">aslamrizky81@gmail.com</div></div>
+              </div>
+              <div class="info-row">
+                <div class="info-icon">#</div>
+                <div><div class="label">Telepon</div><div class="val">0812-9196-0801</div></div>
+              </div>
+              <div class="info-row">
+                <div class="info-icon">*</div>
+                <div><div class="label">Lokasi</div><div class="val">Bogor Utara, Indonesia</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Connect</h3>
+            <div class="social-list">
+              <a class="social-row" href="https://github.com/aslamrizky" target="_blank" rel="noopener" data-hover>
+                <div class="left"><i class="devicon-github-original"></i> GitHub</div><span>↗</span>
+              </a>
+              <a class="social-row" href="https://instagram.com/aslam.rizky04" target="_blank" rel="noopener" data-hover>
+                <div class="left"><i class="devicon-github-original" style="opacity:0"></i> Instagram</div><span>↗</span>
+              </a>
+              <a class="social-row" href="mailto:aslamrizky81@gmail.com" data-hover>
+                <div class="left"><i class="devicon-github-original" style="opacity:0"></i> Email</div><span>↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+      <p>&copy; 2026 Aslam Rizky Fadillah. Built with Vue.js.</p>
+      <p>Bandung, Indonesia</p>
+    </div>
+  </footer>
+
+  <div class="toast" :class="{show:toastShow}">{{ toastMsg }}</div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
