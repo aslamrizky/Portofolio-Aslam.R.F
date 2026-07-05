@@ -16,6 +16,17 @@
 <body>
 
 <div id="app">
+  <!-- LOADING SCREEN -->
+  <div class="loader" :class="{hide:!loading}" aria-hidden="true">
+    <div class="loader-grid"></div>
+    <transition name="greet-fade" mode="out-in">
+      <div class="loader-greet" :key="greetIndex">{{ greetings[greetIndex] }}</div>
+    </transition>
+    <div class="loader-dots">
+      <span v-for="(g, i) in greetings" :key="g" :class="{active:i<=greetIndex}"></span>
+    </div>
+  </div>
+
   <div class="cursor-dot" :style="dotStyle"></div>
   <div class="cursor-ring" :class="{hovering:isHovering}" :style="ringStyle"></div>
 
@@ -28,14 +39,19 @@
     <div class="nav-inner">
       <a href="#home" class="logo"><span class="br">&lt;</span>ARF<span class="br">/&gt;</span></a>
       <nav class="nav-links">
-        <a href="#home" :class="{active:activeSection==='home'}">Home</a>
-        <a href="#about" :class="{active:activeSection==='about'}">About</a>
-        <a href="#experience" :class="{active:activeSection==='experience'}">Experience</a>
-        <a href="#portfolio" :class="{active:activeSection==='portfolio'}">Portfolio</a>
-        <a href="#contact" :class="{active:activeSection==='contact'}">Contact</a>
+        <a href="#home" :class="{active:activeSection==='home'}">{{ t.nav.home }}</a>
+        <a href="#about" :class="{active:activeSection==='about'}">{{ t.nav.about }}</a>
+        <a href="#experience" :class="{active:activeSection==='experience'}">{{ t.nav.experience }}</a>
+        <a href="#portfolio" :class="{active:activeSection==='portfolio'}">{{ t.nav.portfolio }}</a>
+        <a href="#contact" :class="{active:activeSection==='contact'}">{{ t.nav.contact }}</a>
       </nav>
       <div class="nav-right">
-        <div class="theme-toggle" @click="toggleTheme"><div class="knob"></div></div>
+        <div class="lang-toggle" :class="{'is-en': lang==='en'}" @click="toggleLang" data-hover :aria-label="lang==='id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'">
+          <div class="knob">{{ lang.toUpperCase() }}</div>
+        </div>
+        <div class="theme-toggle" @click="toggleTheme" data-hover>
+          <div class="knob">{{ theme === 'dark' ? '🌙' : '☀️' }}</div>
+        </div>
         <div class="burger" @click="menuOpen = !menuOpen">
           <span :style="menuOpen ? 'transform:translateY(7px) rotate(45deg)' : ''"></span>
           <span :style="menuOpen ? 'opacity:0' : ''"></span>
@@ -44,11 +60,11 @@
       </div>
     </div>
     <div class="mobile-menu" :class="{open:menuOpen}">
-      <a href="#home" @click="menuOpen=false" :class="{active:activeSection==='home'}">Home</a>
-      <a href="#about" @click="menuOpen=false" :class="{active:activeSection==='about'}">About</a>
-      <a href="#experience" @click="menuOpen=false" :class="{active:activeSection==='experience'}">Experience</a>
-      <a href="#portfolio" @click="menuOpen=false" :class="{active:activeSection==='portfolio'}">Portfolio</a>
-      <a href="#contact" @click="menuOpen=false" :class="{active:activeSection==='contact'}">Contact</a>
+      <a href="#home" @click="menuOpen=false" :class="{active:activeSection==='home'}">{{ t.nav.home }}</a>
+      <a href="#about" @click="menuOpen=false" :class="{active:activeSection==='about'}">{{ t.nav.about }}</a>
+      <a href="#experience" @click="menuOpen=false" :class="{active:activeSection==='experience'}">{{ t.nav.experience }}</a>
+      <a href="#portfolio" @click="menuOpen=false" :class="{active:activeSection==='portfolio'}">{{ t.nav.portfolio }}</a>
+      <a href="#contact" @click="menuOpen=false" :class="{active:activeSection==='contact'}">{{ t.nav.contact }}</a>
     </div>
   </header>
 
@@ -61,16 +77,16 @@
         <div class="hero-photo-glow"></div>
         <div class="hero-photo"><img src="img/profile-hd.png" alt="Aslam Rizky Fadillah"></div>
         <div class="hero-overlay-text">
-          <div class="eyebrow">Software Engineering Student</div>
+          <div class="eyebrow">{{ t.hero.eyebrow }}</div>
           <h1 class="hero-name">Aslam Rizky<br><span class="hl">Fadillah</span></h1>
         </div>
       </div>
 
       <div class="hero-content">
-        <p class="hero-tagline">// Membangun antarmuka & sistem dengan presisi seorang developer, dan rasa ingin tahu seorang gamer terhadap teknologi.</p>
+        <p class="hero-tagline">{{ t.hero.tagline }}</p>
         <div class="hero-cta">
-          <a href="#portfolio" class="btn btn-primary" data-hover>Lihat Portofolio</a>
-          <a :href="cvHref" download="CV_Aslam_Rizky_Fadillah.pdf" class="btn btn-outline" data-hover>Unduh CV</a>
+          <a href="#portfolio" class="btn btn-primary" data-hover>{{ t.hero.ctaPortfolio }}</a>
+          <a :href="cvHref" download="CV_Aslam_Rizky_Fadillah.pdf" class="btn btn-outline" data-hover>{{ t.hero.ctaCV }}</a>
         </div>
       </div>
 
@@ -80,7 +96,7 @@
         <a href="https://instagram.com/aslam.rizky04" target="_blank" rel="noopener" data-hover>IG</a>
       </div>
     </div>
-    <div class="scroll-cue"><span>SCROLL</span><div class="line"></div></div>
+    <div class="scroll-cue"><span>{{ t.hero.scroll }}</span><div class="line"></div></div>
   </section>
 
   <!-- STATS -->
@@ -88,10 +104,10 @@
     <div class="wrap reveal" id="stats-reveal">
       <div class="scanline"></div>
       <div class="stats-bar">
-        <div class="stat-cell"><div class="stat-num">{{ statsCount.sem }}</div><div class="stat-label">Semester</div></div>
-        <div class="stat-cell"><div class="stat-num">{{ statsCount.proj }}+</div><div class="stat-label">Proyek</div></div>
-        <div class="stat-cell"><div class="stat-num">{{ statsCount.stack }}+</div><div class="stat-label">Tech Stack</div></div>
-        <div class="stat-cell"><div class="stat-num">{{ statsCount.org }}</div><div class="stat-label">Organisasi</div></div>
+        <div class="stat-cell"><div class="stat-num">{{ statsCount.sem }}</div><div class="stat-label">{{ t.stats.sem }}</div></div>
+        <div class="stat-cell"><div class="stat-num">{{ statsCount.proj }}+</div><div class="stat-label">{{ t.stats.proj }}</div></div>
+        <div class="stat-cell"><div class="stat-num">{{ statsCount.stack }}+</div><div class="stat-label">{{ t.stats.stack }}</div></div>
+        <div class="stat-cell"><div class="stat-num">{{ statsCount.org }}</div><div class="stat-label">{{ t.stats.org }}</div></div>
       </div>
     </div>
   </section>
@@ -99,28 +115,28 @@
   <!-- ABOUT -->
   <section id="about">
     <div class="wrap">
-      <div class="eyebrow reveal">Tentang Saya</div>
-      <h2 class="sec-title reveal">Profil Ringkas</h2>
+      <div class="eyebrow reveal">{{ t.about.eyebrow }}</div>
+      <h2 class="sec-title reveal">{{ t.about.title }}</h2>
       <div class="about-grid">
         <div class="about-text reveal">
           <div class="scanline"></div>
-          <p>Mahasiswa <strong>Software Engineering</strong> di Telkom University yang bersemangat dalam pengembangan <strong>front-end</strong> dan eksplorasi berbagai bahasa pemrograman.</p>
-          <p>Tertarik pada persimpangan antara <strong>rekayasa perangkat lunak</strong> dan <strong>teknologi game</strong> — menyukai sistem yang terstruktur rapi seperti mekanik game yang baik: jelas, responsif, dan menyenangkan digunakan.</p>
-          <p>Berkomitmen untuk terus berkembang, berkolaborasi dalam tim, dan menghadirkan solusi yang berdampak nyata.</p>
+          <p v-html="t.about.p1"></p>
+          <p v-html="t.about.p2"></p>
+          <p>{{ t.about.p3 }}</p>
 
           <div class="edu-card">
-            <div class="deg">Sarjana Software Engineering</div>
-            <div class="sch">Telkom University, Bandung</div>
-            <div class="yr">2023 — Sekarang &nbsp;·&nbsp; Semester 6</div>
+            <div class="deg">{{ t.about.eduDeg }}</div>
+            <div class="sch">{{ t.about.eduSch }}</div>
+            <div class="yr">{{ t.about.eduYr }}</div>
           </div>
         </div>
         <div class="reveal">
           <div class="scanline"></div>
-          <p style="font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; color:var(--text-tertiary); text-transform:uppercase; margin-bottom:14px;">Core Skills</p>
+          <p style="font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; color:var(--text-tertiary); text-transform:uppercase; margin-bottom:14px;">{{ t.about.coreSkills }}</p>
           <div class="skill-cloud">
             <div class="skill-chip" v-for="s in coreSkills" :key="s">{{ s }}</div>
           </div>
-          <p style="font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; color:var(--text-tertiary); text-transform:uppercase; margin:28px 0 14px;">Soft Skills</p>
+          <p style="font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; color:var(--text-tertiary); text-transform:uppercase; margin:28px 0 14px;">{{ t.about.softSkills }}</p>
           <div class="skill-cloud">
             <div class="skill-chip" v-for="s in softSkills" :key="s">{{ s }}</div>
           </div>
@@ -132,11 +148,11 @@
   <!-- EXPERIENCE -->
   <section id="experience">
     <div class="wrap">
-      <div class="eyebrow reveal">Rekam Jejak</div>
-      <h2 class="sec-title reveal">Pengalaman</h2>
-      <p class="sec-sub reveal">Perjalanan kontribusi dan pembelajaran praktis selama masa studi.</p>
+      <div class="eyebrow reveal">{{ t.experience.eyebrow }}</div>
+      <h2 class="sec-title reveal">{{ t.experience.title }}</h2>
+      <p class="sec-sub reveal">{{ t.experience.sub }}</p>
       <div class="timeline reveal-stagger" id="tl-reveal">
-        <div class="tl-item" v-for="exp in experience" :key="exp.role">
+        <div class="tl-item" v-for="exp in experienceView" :key="exp.role+exp.year">
           <div class="tl-dot"></div>
           <div class="tl-year">{{ exp.year }}</div>
           <div class="tl-role">{{ exp.role }}</div>
@@ -150,19 +166,19 @@
   <!-- PORTFOLIO -->
   <section id="portfolio">
     <div class="wrap">
-      <div class="eyebrow reveal">Portfolio Showcase</div>
-      <h2 class="sec-title reveal">Karya &amp; Keahlian</h2>
-      <p class="sec-sub reveal">Jelajahi proyek yang telah dibangun, tumpukan teknologi yang digunakan sehari-hari, serta sertifikat yang pernah diraih.</p>
+      <div class="eyebrow reveal">{{ t.portfolio.eyebrow }}</div>
+      <h2 class="sec-title reveal">{{ t.portfolio.title }}</h2>
+      <p class="sec-sub reveal">{{ t.portfolio.sub }}</p>
 
       <div class="tab-switch reveal">
-        <button class="tab-btn" :class="{active:activeTab==='projects'}" @click="activeTab='projects'" data-hover>Projects</button>
-        <button class="tab-btn" :class="{active:activeTab==='techstack'}" @click="activeTab='techstack'" data-hover>Tech Stack</button>
-        <button class="tab-btn" :class="{active:activeTab==='certificates'}" @click="activeTab='certificates'" data-hover>Sertifikat</button>
+        <button class="tab-btn" :class="{active:activeTab==='projects'}" @click="activeTab='projects'" data-hover>{{ t.portfolio.tabProjects }}</button>
+        <button class="tab-btn" :class="{active:activeTab==='techstack'}" @click="activeTab='techstack'" data-hover>{{ t.portfolio.tabTechstack }}</button>
+        <button class="tab-btn" :class="{active:activeTab==='certificates'}" @click="activeTab='certificates'" data-hover>{{ t.portfolio.tabCertificates }}</button>
       </div>
 
       <transition name="fade-tab" mode="out-in">
         <div class="project-grid" v-if="activeTab==='projects'" key="p">
-          <div class="proj-card" v-for="p in projects" :key="p.title" @click="openProject(p)" data-hover>
+          <div class="proj-card" v-for="p in projectsView" :key="p.image" @click="openProject(p)" data-hover>
             <div class="proj-cover"><img :src="p.image" :alt="p.title" loading="lazy"></div>
             <div class="proj-body">
               <div class="proj-title">{{ p.title }}</div>
@@ -208,10 +224,10 @@
       <button class="drawer-close" @click="closeProject" data-hover>&times;</button>
       <img class="drawer-image" :src="selectedProject.image" :alt="selectedProject.title">
       <div class="drawer-body">
-        <div class="drawer-eyebrow">Detail Proyek</div>
+        <div class="drawer-eyebrow">{{ t.drawer.detail }}</div>
         <h3 class="drawer-title">{{ selectedProject.title }}</h3>
         <p class="drawer-desc">{{ selectedProject.fullDesc }}</p>
-        <div class="drawer-tech-label">Tech Stack</div>
+        <div class="drawer-tech-label">{{ t.drawer.techStack }}</div>
         <div class="drawer-tech-row">
           <div class="drawer-tech-item" v-for="t in selectedProject.tech" :key="t.name">
             <div class="icon-wrap"><i :class="t.icon"></i></div>
@@ -222,59 +238,59 @@
     </template>
   </aside>
 
-  <!-- CERTIFICATE LIGHTBOX -->
+  <!-- CERTIFICATE -->
   <div class="lightbox" :class="{show:lightboxImage}" @click="closeLightbox">
     <button class="lightbox-close" @click.stop="closeLightbox" data-hover>&times;</button>
-    <img v-if="lightboxImage" :src="lightboxImage" alt="Sertifikat">
+    <img v-if="lightboxImage" :src="lightboxImage" :alt="t.lightbox.alt">
   </div>
 
   <!-- CONTACT -->
   <section id="contact">
     <div class="wrap">
-      <div class="eyebrow reveal">Hubungi Saya</div>
-      <h2 class="sec-title reveal">Contact</h2>
-      <p class="sec-sub reveal">Terbuka untuk kolaborasi proyek, kesempatan magang, atau sekadar berdiskusi seputar teknologi.</p>
+      <div class="eyebrow reveal">{{ t.contact.eyebrow }}</div>
+      <h2 class="sec-title reveal">{{ t.contact.title }}</h2>
+      <p class="sec-sub reveal">{{ t.contact.sub }}</p>
 
       <div class="contact-grid reveal">
         <div class="scanline"></div>
         <form class="panel" @submit.prevent="sendMessage">
-          <h3>Kirim Pesan</h3>
-          <p class="hint">Isi form di bawah — pesan akan terkirim langsung melalui email.</p>
+          <h3>{{ t.contact.formTitle }}</h3>
+          <p class="hint">{{ t.contact.formHint }}</p>
           <div class="field">
-            <label>Nama</label>
-            <input type="text" v-model="form.name" required placeholder="Nama kamu">
+            <label>{{ t.contact.labelName }}</label>
+            <input type="text" v-model="form.name" required :placeholder="t.contact.placeholderName">
           </div>
           <div class="field">
-            <label>Email</label>
-            <input type="email" v-model="form.email" required placeholder="email@contoh.com">
+            <label>{{ t.contact.labelEmail }}</label>
+            <input type="email" v-model="form.email" required :placeholder="t.contact.placeholderEmail">
           </div>
           <div class="field">
-            <label>Pesan</label>
-            <textarea v-model="form.message" required placeholder="Tulis pesan di sini..."></textarea>
+            <label>{{ t.contact.labelMessage }}</label>
+            <textarea v-model="form.message" required :placeholder="t.contact.placeholderMessage"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;" data-hover>Kirim Pesan</button>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;" data-hover>{{ t.contact.send }}</button>
         </form>
 
         <div class="contact-side">
           <div class="panel">
-            <h3>Info Kontak</h3>
+            <h3>{{ t.contact.infoTitle }}</h3>
             <div style="display:flex; flex-direction:column; gap:18px; margin-top:22px;">
               <div class="info-row">
                 <div class="info-icon">@</div>
-                <div><div class="label">Email</div><div class="val">aslamrizky81@gmail.com</div></div>
+                <div><div class="label">{{ t.contact.labelEmail }}</div><div class="val">aslamrizky81@gmail.com</div></div>
               </div>
               <div class="info-row">
                 <div class="info-icon">#</div>
-                <div><div class="label">Telepon</div><div class="val">0812-9196-0801</div></div>
+                <div><div class="label">{{ t.contact.labelPhone }}</div><div class="val">0812-9196-0801</div></div>
               </div>
               <div class="info-row">
                 <div class="info-icon">*</div>
-                <div><div class="label">Lokasi</div><div class="val">Bogor Utara, Indonesia</div></div>
+                <div><div class="label">{{ t.contact.labelLocation }}</div><div class="val">{{ t.contact.location }}</div></div>
               </div>
             </div>
           </div>
           <div class="panel">
-            <h3>Connect</h3>
+            <h3>{{ t.contact.connect }}</h3>
             <div class="social-list">
               <a class="social-row" href="https://github.com/aslamrizky" target="_blank" rel="noopener" data-hover>
                 <div class="left"><i class="devicon-github-original"></i> GitHub</div><span>↗</span>
@@ -294,8 +310,8 @@
 
   <footer>
     <div class="wrap" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-      <p>&copy; 2026 Aslam Rizky Fadillah. Built with Vue.js.</p>
-      <p>Bandung, Indonesia</p>
+      <p>{{ t.footer.rights }}</p>
+      <p>{{ t.footer.location }}</p>
     </div>
   </footer>
 

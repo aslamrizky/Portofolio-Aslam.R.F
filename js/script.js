@@ -4,6 +4,10 @@ createApp({
   setup(){
     const state = reactive({
       theme:'dark',
+      lang:'id',
+      loading:true,
+      greetIndex:0,
+      greetings:['Halo','Hello','Hola','Bonjour','こんにちは'],
       menuOpen:false,
       activeTab:'projects',
       activeSection:'home',
@@ -20,16 +24,27 @@ createApp({
       coreSkills:['HTML','CSS','JavaScript','React.js','Python','Java','C#','Laravel','Flutter','Dart'],
       softSkills:['Komunikasi','Kerja Tim','Manajemen Waktu','Problem Solving'],
       experience:[
-        { year:'2025', role:'IT System Analyst Intern', org:'Tazkia University', desc:'Merancang alur kerja (workflow) sistem menggunakan flow chart untuk memastikan digitalisasi proses penjaminan mutu berjalan efisien dan sesuai standar akreditasi.' },
-        { year:'2024', role:'Team Member Software Engineering', org:'PMB (Penerimaan Mahasiswa Baru)', desc:'Berkontribusi pada penerimaan mahasiswa baru dengan memberikan bimbingan serta meningkatkan pengalaman orientasi bagi mahasiswa baru.' },
-        { year:'2024 — Sekarang', role:'Team Member', org:'Al Fath Organization', desc:'Berpartisipasi aktif dalam manajemen kesekretariatan dan administrasi kegiatan dakwah Islam organisasi.' },
+        { year:'2025', org:'Tazkia University',
+          role:{ id:'IT System Analyst Intern', en:'IT System Analyst Intern' },
+          desc:{ id:'Merancang alur kerja (workflow) sistem menggunakan flow chart untuk memastikan digitalisasi proses penjaminan mutu berjalan efisien dan sesuai standar akreditasi.',
+                 en:'Designed system workflows using flowcharts to ensure the digitalization of the quality-assurance process ran efficiently and met accreditation standards.' } },
+        { year:'2024', org:'PMB (Penerimaan Mahasiswa Baru)',
+          role:{ id:'Team Member Software Engineering', en:'Team Member, Software Engineering' },
+          desc:{ id:'Berkontribusi pada penerimaan mahasiswa baru dengan memberikan bimbingan serta meningkatkan pengalaman orientasi bagi mahasiswa baru.',
+                 en:'Contributed to the new-student admissions process by providing guidance and improving the orientation experience for incoming students.' } },
+        { year:'2024 — Sekarang', org:'Al Fath Organization',
+          role:{ id:'Team Member', en:'Team Member' },
+          desc:{ id:'Berpartisipasi aktif dalam manajemen kesekretariatan dan administrasi kegiatan dakwah Islam organisasi.',
+                 en:"Actively participated in the organization's secretarial management and administration of Islamic outreach (dakwah) activities." } },
       ],
       projects:[
         {
-          title:'Sistem Inventaris Masjid',
+          title:{ id:'Sistem Inventaris Masjid', en:'Mosque Inventory System' },
           image:'img/proj-masjid.jpg',
-          desc:'Sistem manajemen inventaris berbasis web untuk Masjid Syamsul Ulum guna memfasilitasi pelacakan aset secara digital, lengkap dengan fitur peminjaman & pemantauan stok real-time.',
-          fullDesc:'Sistem manajemen inventaris berbasis web yang dibangun untuk Masjid Syamsul Ulum. Aplikasi ini memfasilitasi pelacakan aset masjid secara digital dan terpusat, lengkap dengan fitur pencatatan peminjaman barang, riwayat transaksi, serta pemantauan stok secara real-time agar pengurus masjid dapat mengelola inventaris dengan lebih rapi dan transparan.',
+          desc:{ id:'Sistem manajemen inventaris berbasis web untuk Masjid Syamsul Ulum guna memfasilitasi pelacakan aset secara digital, lengkap dengan fitur peminjaman & pemantauan stok real-time.',
+                 en:'A web-based inventory management system for Masjid Syamsul Ulum that digitizes asset tracking, complete with item borrowing and real-time stock monitoring features.' },
+          fullDesc:{ id:'Sistem manajemen inventaris berbasis web yang dibangun untuk Masjid Syamsul Ulum. Aplikasi ini memfasilitasi pelacakan aset masjid secara digital dan terpusat, lengkap dengan fitur pencatatan peminjaman barang, riwayat transaksi, serta pemantauan stok secara real-time agar pengurus masjid dapat mengelola inventaris dengan lebih rapi dan transparan.',
+                     en:'A web-based inventory management system built for Masjid Syamsul Ulum. The app digitizes and centralizes asset tracking, complete with item-borrowing records, transaction history, and real-time stock monitoring — helping mosque administrators manage inventory in a more organized and transparent way.' },
           tech:[
             { name:'Laravel', icon:'devicon-laravel-plain colored' },
             { name:'PHP', icon:'devicon-php-plain colored' },
@@ -38,20 +53,24 @@ createApp({
           ],
         },
         {
-          title:'Aplikasi Keuangan Mobile',
+          title:{ id:'Aplikasi Keuangan Mobile', en:'Mobile Finance App' },
           image:'img/proj-keuangan.jpg',
-          desc:'Aplikasi seluler lintas platform untuk manajemen keuangan pribadi dengan fitur pelacakan pendapatan, pengeluaran, dan pelaporan transaksi.',
-          fullDesc:'Aplikasi seluler lintas platform (Android & iOS) untuk membantu pengguna mengelola keuangan pribadi. Dilengkapi fitur pencatatan pendapatan dan pengeluaran, kategori transaksi, serta laporan ringkasan keuangan dalam bentuk grafik agar pengguna lebih mudah memahami arus kas hariannya.',
+          desc:{ id:'Aplikasi seluler lintas platform untuk manajemen keuangan pribadi dengan fitur pelacakan pendapatan, pengeluaran, dan pelaporan transaksi.',
+                 en:'A cross-platform mobile app for personal finance management, featuring income and expense tracking along with transaction reports.' },
+          fullDesc:{ id:'Aplikasi seluler lintas platform (Android & iOS) untuk membantu pengguna mengelola keuangan pribadi. Dilengkapi fitur pencatatan pendapatan dan pengeluaran, kategori transaksi, serta laporan ringkasan keuangan dalam bentuk grafik agar pengguna lebih mudah memahami arus kas hariannya.',
+                     en:'A cross-platform mobile app (Android & iOS) that helps users manage their personal finances. It includes income and expense logging, transaction categories, and visual financial summary reports so users can easily understand their daily cash flow.' },
           tech:[
             { name:'Flutter', icon:'devicon-flutter-plain colored' },
             { name:'Dart', icon:'devicon-dart-plain colored' },
           ],
         },
         {
-          title:'Pasar Barang Bekas',
+          title:{ id:'Pasar Barang Bekas', en:'Second-Hand Marketplace' },
           image:'img/proj-pasar.jpg',
-          desc:'Aplikasi pasar berbasis konsol dengan prinsip OOP untuk transaksi jual-beli barang bekas secara terstruktur, termasuk pengelolaan daftar produk.',
-          fullDesc:'Aplikasi berbasis konsol yang mensimulasikan pasar jual-beli barang bekas dengan menerapkan prinsip Object-Oriented Programming secara konsisten. Mendukung pengelolaan daftar produk, proses transaksi jual-beli, serta validasi data agar alur bisnis sederhana ini tetap terstruktur dan mudah dikembangkan.',
+          desc:{ id:'Aplikasi pasar berbasis konsol dengan prinsip OOP untuk transaksi jual-beli barang bekas secara terstruktur, termasuk pengelolaan daftar produk.',
+                 en:'A console-based marketplace app built with OOP principles for structured buying and selling of second-hand goods, including product-listing management.' },
+          fullDesc:{ id:'Aplikasi berbasis konsol yang mensimulasikan pasar jual-beli barang bekas dengan menerapkan prinsip Object-Oriented Programming secara konsisten. Mendukung pengelolaan daftar produk, proses transaksi jual-beli, serta validasi data agar alur bisnis sederhana ini tetap terstruktur dan mudah dikembangkan.',
+                     en:'A console-based application that simulates a second-hand marketplace by consistently applying Object-Oriented Programming principles. It supports product-listing management, buy/sell transactions, and data validation to keep this simple business flow structured and easy to extend.' },
           tech:[
             { name:'C#', icon:'devicon-csharp-plain colored' },
             { name:'.NET', icon:'devicon-dot-net-plain' },
@@ -91,6 +110,69 @@ createApp({
       }));
     });
 
+    const translations = {
+      id:{
+        nav:{ home:'Home', about:'About', experience:'Experience', portfolio:'Portfolio', contact:'Contact' },
+        hero:{ eyebrow:'Software Engineering Student', tagline:'// Membangun antarmuka & sistem dengan presisi seorang developer, dan rasa ingin tahu seorang gamer terhadap teknologi.', ctaPortfolio:'Lihat Portofolio', ctaCV:'Unduh CV', scroll:'SCROLL' },
+        stats:{ sem:'Semester', proj:'Proyek', stack:'Tech Stack', org:'Organisasi' },
+        about:{ eyebrow:'Tentang Saya', title:'Profil Ringkas',
+          p1:'Mahasiswa <strong>Software Engineering</strong> di Telkom University yang bersemangat dalam pengembangan <strong>front-end</strong> dan eksplorasi berbagai bahasa pemrograman.',
+          p2:'Tertarik pada persimpangan antara <strong>rekayasa perangkat lunak</strong> dan <strong>teknologi game</strong> — menyukai sistem yang terstruktur rapi seperti mekanik game yang baik: jelas, responsif, dan menyenangkan digunakan.',
+          p3:'Berkomitmen untuk terus berkembang, berkolaborasi dalam tim, dan menghadirkan solusi yang berdampak nyata.',
+          eduDeg:'Sarjana Software Engineering', eduSch:'Telkom University, Bandung', eduYr:'2023 — Sekarang \u00A0·\u00A0 Semester 6',
+          coreSkills:'Core Skills', softSkills:'Soft Skills' },
+        experience:{ eyebrow:'Rekam Jejak', title:'Pengalaman', sub:'Perjalanan kontribusi dan pembelajaran praktis selama masa studi.' },
+        portfolio:{ eyebrow:'Portfolio Showcase', title:'Karya & Keahlian', sub:'Jelajahi proyek yang telah dibangun, tumpukan teknologi yang digunakan sehari-hari, serta sertifikat yang pernah diraih.', tabProjects:'Projects', tabTechstack:'Tech Stack', tabCertificates:'Sertifikat' },
+        drawer:{ detail:'Detail Proyek', techStack:'Tech Stack' },
+        lightbox:{ alt:'Sertifikat' },
+        contact:{ eyebrow:'Hubungi Saya', title:'Contact', sub:'Terbuka untuk kolaborasi proyek, kesempatan magang, atau sekadar berdiskusi seputar teknologi.',
+          formTitle:'Kirim Pesan', formHint:'Isi form di bawah — pesan akan terkirim langsung melalui email.',
+          labelName:'Nama', labelEmail:'Email', labelMessage:'Pesan',
+          placeholderName:'Nama kamu', placeholderEmail:'email@contoh.com', placeholderMessage:'Tulis pesan di sini...',
+          send:'Kirim Pesan', infoTitle:'Info Kontak', labelPhone:'Telepon', labelLocation:'Lokasi', location:'Bogor Utara, Indonesia',
+          connect:'Connect' },
+        footer:{ rights:'© 2026 Aslam Rizky Fadillah. Built with Vue.js.', location:'Bandung, Indonesia' },
+      },
+      en:{
+        nav:{ home:'Home', about:'About', experience:'Experience', portfolio:'Portfolio', contact:'Contact' },
+        hero:{ eyebrow:'Software Engineering Student', tagline:"// Building interfaces & systems with a developer's precision, and a gamer's curiosity for technology.", ctaPortfolio:'View Portfolio', ctaCV:'Download CV', scroll:'SCROLL' },
+        stats:{ sem:'Semester', proj:'Projects', stack:'Tech Stack', org:'Organizations' },
+        about:{ eyebrow:'About Me', title:'Quick Profile',
+          p1:'A <strong>Software Engineering</strong> student at Telkom University, passionate about <strong>front-end</strong> development and exploring different programming languages.',
+          p2:'Interested in the intersection between <strong>software engineering</strong> and <strong>game technology</strong> — I enjoy systems that are as well-structured as good game mechanics: clear, responsive, and fun to use.',
+          p3:'Committed to continuous growth, collaborating with teams, and delivering solutions that make a real impact.',
+          eduDeg:'Bachelor of Software Engineering', eduSch:'Telkom University, Bandung', eduYr:'2023 — Present \u00A0·\u00A0 Semester 6',
+          coreSkills:'Core Skills', softSkills:'Soft Skills' },
+        experience:{ eyebrow:'Track Record', title:'Experience', sub:'A journey of contribution and hands-on learning throughout my studies.' },
+        portfolio:{ eyebrow:'Portfolio Showcase', title:'Work & Expertise', sub:'Explore the projects I have built, the tech stack I use daily, and the certificates I have earned.', tabProjects:'Projects', tabTechstack:'Tech Stack', tabCertificates:'Certificates' },
+        drawer:{ detail:'Project Detail', techStack:'Tech Stack' },
+        lightbox:{ alt:'Certificate' },
+        contact:{ eyebrow:'Get In Touch', title:'Contact', sub:'Open to project collaborations, internship opportunities, or just a chat about technology.',
+          formTitle:'Send a Message', formHint:'Fill in the form below — your message will be sent directly via email.',
+          labelName:'Name', labelEmail:'Email', labelMessage:'Message',
+          placeholderName:'Your name', placeholderEmail:'email@example.com', placeholderMessage:'Write your message here...',
+          send:'Send Message', infoTitle:'Contact Info', labelPhone:'Phone', labelLocation:'Location', location:'North Bogor, Indonesia',
+          connect:'Connect' },
+        footer:{ rights:'© 2026 Aslam Rizky Fadillah. Built with Vue.js.', location:'Bandung, Indonesia' },
+      },
+    };
+    const t = computed(()=> translations[state.lang]);
+    function toggleLang(){
+      state.lang = state.lang === 'id' ? 'en' : 'id';
+    }
+
+    const projectsView = computed(()=> state.projects.map(p => ({
+      ...p,
+      title: p.title[state.lang],
+      desc: p.desc[state.lang],
+      fullDesc: p.fullDesc[state.lang],
+    })));
+    const experienceView = computed(()=> state.experience.map(exp => ({
+      ...exp,
+      role: exp.role[state.lang],
+      desc: exp.desc[state.lang],
+    })));
+
     function toggleTheme(){
       state.theme = state.theme === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', state.theme);
@@ -127,6 +209,21 @@ createApp({
     onMounted(()=>{
       document.documentElement.setAttribute('data-theme', state.theme);
 
+      // loading screen
+      document.documentElement.style.overflow = 'hidden';
+      const GREET_INTERVAL = 500;
+      let step = 0;
+      const greetTimer = setInterval(()=>{
+        step++;
+        if(step < state.greetings.length){
+          state.greetIndex = step;
+        } else {
+          clearInterval(greetTimer);
+          state.loading = false;
+          document.documentElement.style.overflow = '';
+        }
+      }, GREET_INTERVAL);
+
       // custom cursor
       window.addEventListener('mousemove', (e)=>{
         state.dotStyle = { transform:`translate(-50%,-50%) translate(${e.clientX}px, ${e.clientY}px)` };
@@ -161,6 +258,7 @@ createApp({
       }, { threshold:0, rootMargin:'-45% 0px -50% 0px' });
       sections.forEach(sec => spy.observe(sec));
 
+      // close drawer
       window.addEventListener('keydown', (e)=>{
         if(e.key === 'Escape'){
           closeProject();
@@ -169,6 +267,6 @@ createApp({
       });
     });
 
-    return { ...toRefs(state), techRows, toggleTheme, sendMessage, openProject, closeProject, openLightbox, closeLightbox };
+    return { ...toRefs(state), techRows, t, projectsView, experienceView, toggleLang, toggleTheme, sendMessage, openProject, closeProject, openLightbox, closeLightbox };
   }
 }).mount('#app');
