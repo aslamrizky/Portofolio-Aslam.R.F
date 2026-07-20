@@ -1,5 +1,16 @@
 const { createApp, reactive, toRefs, onMounted, computed } = Vue;
 
+async function loadTranslations(){
+  try {
+    const res = await fetch('translations.json');
+    return await res.json();
+  } catch (err) {
+    console.error('Gagal memuat translations.json:', err);
+    return { id: {}, en: {} };
+  }
+}
+
+loadTranslations().then((translationsData) => {
 createApp({
   setup(){
     const state = reactive({
@@ -112,55 +123,18 @@ createApp({
       }));
     });
 
-    const translations = {
-      id:{
-        nav:{ home:'Home', about:'About', experience:'Experience', portfolio:'Portfolio', contact:'Contact' },
-        hero:{ hi:'Hai, Selamat Datang!', imPrefix:'Saya', role:'Fullstack Developer', eyebrow:'Software Engineering Student', tagline:'Membangun antarmuka & sistem dengan presisi seorang developer, dan rasa ingin tahu seorang gamer terhadap teknologi.', ctaPortfolio:'Lihat Portofolio', ctaCV:'Unduh CV', scroll:'SCROLL' },
-        stats:{ sem:'Semester', proj:'Proyek', stack:'Tech Stack', org:'Organisasi' },
-        about:{ eyebrow:'Tentang Saya', title:'Profil Ringkas',
-          p1:'Mahasiswa <strong>Software Engineering</strong> di Telkom University yang bersemangat dalam pengembangan <strong>front-end</strong> dan eksplorasi berbagai bahasa pemrograman.',
-          p2:'Tertarik pada persimpangan antara <strong>rekayasa perangkat lunak</strong> dan <strong>teknologi game</strong> — menyukai sistem yang terstruktur rapi seperti mekanik game yang baik: jelas, responsif, dan menyenangkan digunakan.',
-          p3:'Berkomitmen untuk terus berkembang, berkolaborasi dalam tim, dan menghadirkan solusi yang berdampak nyata.',
-          eduDeg:'Sarjana Software Engineering', eduSch:'Telkom University, Bandung', eduYr:'2023 — Sekarang \u00A0·\u00A0 Semester 6',
-          coreSkills:'Core Skills', softSkills:'Soft Skills' },
-        experience:{ eyebrow:'Rekam Jejak', title:'Pengalaman', sub:'Perjalanan kontribusi dan pembelajaran praktis selama masa studi.' },
-        portfolio:{ eyebrow:'Portfolio Showcase', title:'Karya & Keahlian', sub:'Jelajahi proyek yang telah dibangun, tumpukan teknologi yang digunakan sehari-hari, serta sertifikat yang pernah diraih.', tabProjects:'Projects', tabTechstack:'Tech Stack', tabCertificates:'Sertifikat' },
-        drawer:{ detail:'Detail Proyek', techStack:'Tech Stack' },
-        lightbox:{ alt:'Sertifikat' },
-        contact:{ eyebrow:'Hubungi Saya', title:'Contact', sub:'Terbuka untuk kolaborasi proyek, kesempatan magang, atau sekadar berdiskusi seputar teknologi.',
-          formTitle:'Kirim Pesan', formHint:'Isi form di bawah — pesan akan terkirim langsung melalui email.',
-          labelName:'Nama', labelEmail:'Email', labelMessage:'Pesan',
-          placeholderName:'Nama kamu', placeholderEmail:'email@contoh.com', placeholderMessage:'Tulis pesan di sini...',
-          send:'Kirim Pesan', infoTitle:'Info Kontak', labelPhone:'Telepon', labelLocation:'Lokasi', location:'Bogor Utara, Indonesia',
-          connect:'Connect' },
-        footer:{ rights:'© 2026 Aslam Rizky Fadillah. Built with Vue.js.', location:'Bandung, Indonesia' },
-      },
-      en:{
-        nav:{ home:'Home', about:'About', experience:'Experience', portfolio:'Portfolio', contact:'Contact' },
-        hero:{ hi:'Hi, There!', imPrefix:"I'm", role:'Fullstack Developer', eyebrow:'Software Engineering Student', tagline:"Building interfaces & systems with a developer's precision, and a gamer's curiosity for technology.", ctaPortfolio:'View Portfolio', ctaCV:'Download CV', scroll:'SCROLL' },
-        stats:{ sem:'Semester', proj:'Projects', stack:'Tech Stack', org:'Organizations' },
-        about:{ eyebrow:'About Me', title:'Quick Profile',
-          p1:'A <strong>Software Engineering</strong> student at Telkom University, passionate about <strong>front-end</strong> development and exploring different programming languages.',
-          p2:'Interested in the intersection between <strong>software engineering</strong> and <strong>game technology</strong> — I enjoy systems that are as well-structured as good game mechanics: clear, responsive, and fun to use.',
-          p3:'Committed to continuous growth, collaborating with teams, and delivering solutions that make a real impact.',
-          eduDeg:'Bachelor of Software Engineering', eduSch:'Telkom University, Bandung', eduYr:'2023 — Present \u00A0·\u00A0 Semester 6',
-          coreSkills:'Core Skills', softSkills:'Soft Skills' },
-        experience:{ eyebrow:'Track Record', title:'Experience', sub:'A journey of contribution and hands-on learning throughout my studies.' },
-        portfolio:{ eyebrow:'Portfolio Showcase', title:'Work & Expertise', sub:'Explore the projects I have built, the tech stack I use daily, and the certificates I have earned.', tabProjects:'Projects', tabTechstack:'Tech Stack', tabCertificates:'Certificates' },
-        drawer:{ detail:'Project Detail', techStack:'Tech Stack' },
-        lightbox:{ alt:'Certificate' },
-        contact:{ eyebrow:'Get In Touch', title:'Contact', sub:'Open to project collaborations, internship opportunities, or just a chat about technology.',
-          formTitle:'Send a Message', formHint:'Fill in the form below — your message will be sent directly via email.',
-          labelName:'Name', labelEmail:'Email', labelMessage:'Message',
-          placeholderName:'Your name', placeholderEmail:'email@example.com', placeholderMessage:'Write your message here...',
-          send:'Send Message', infoTitle:'Contact Info', labelPhone:'Phone', labelLocation:'Location', location:'North Bogor, Indonesia',
-          connect:'Connect' },
-        footer:{ rights:'© 2026 Aslam Rizky Fadillah. Built with Vue.js.', location:'Bandung, Indonesia' },
-      },
-    };
-    const t = computed(()=> translations[state.lang]);
-    function toggleLang(){
+    const translations = reactive({
+      id: translationsData.id || {},
+      en: translationsData.en || {},
+    });
+    const t = computed(() => {
+      const current = translations[state.lang];
+      return current && Object.keys(current).length > 0 ? current : translations.id;
+    });
+
+    function toggleLang() {
       state.lang = state.lang === 'id' ? 'en' : 'id';
+      localStorage.setItem('lang', state.lang);
       startTyping();
     }
 
@@ -179,6 +153,7 @@ createApp({
     let typingTimer = null;
     function startTyping(){
       if(typingTimer) clearTimeout(typingTimer);
+      if(!t.value || !t.value.hero) return;
       const phrases = [state.fullName, t.value.hero.role];
       let phraseIndex = 0;
       let charIndex = 0;
@@ -244,6 +219,10 @@ createApp({
 
     onMounted(()=>{
       document.documentElement.setAttribute('data-theme', state.theme);
+
+      // translations sudah tersedia sebelum app di-mount, tinggal terapkan bahasa tersimpan
+      const savedLang = localStorage.getItem('lang');
+      if (savedLang) state.lang = savedLang;
       startTyping();
 
       // loading screen
@@ -307,3 +286,4 @@ createApp({
     return { ...toRefs(state), techRows, t, projectsView, experienceView, toggleLang, toggleTheme, sendMessage, openProject, closeProject, openLightbox, closeLightbox };
   }
 }).mount('#app');
+});
