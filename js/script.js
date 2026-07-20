@@ -115,7 +115,7 @@ createApp({
     const translations = {
       id:{
         nav:{ home:'Home', about:'About', experience:'Experience', portfolio:'Portfolio', contact:'Contact' },
-        hero:{ hi:'Hai, Selamat Datang!', imPrefix:'Saya', role:'Fullstack Developer', eyebrow:'Software Engineering Student', tagline:'// Membangun antarmuka & sistem dengan presisi seorang developer, dan rasa ingin tahu seorang gamer terhadap teknologi.', ctaPortfolio:'Lihat Portofolio', ctaCV:'Unduh CV', scroll:'SCROLL' },
+        hero:{ hi:'Hai, Selamat Datang!', imPrefix:'Saya', role:'Fullstack Developer', eyebrow:'Software Engineering Student', tagline:'Membangun antarmuka & sistem dengan presisi seorang developer, dan rasa ingin tahu seorang gamer terhadap teknologi.', ctaPortfolio:'Lihat Portofolio', ctaCV:'Unduh CV', scroll:'SCROLL' },
         stats:{ sem:'Semester', proj:'Proyek', stack:'Tech Stack', org:'Organisasi' },
         about:{ eyebrow:'Tentang Saya', title:'Profil Ringkas',
           p1:'Mahasiswa <strong>Software Engineering</strong> di Telkom University yang bersemangat dalam pengembangan <strong>front-end</strong> dan eksplorasi berbagai bahasa pemrograman.',
@@ -137,7 +137,7 @@ createApp({
       },
       en:{
         nav:{ home:'Home', about:'About', experience:'Experience', portfolio:'Portfolio', contact:'Contact' },
-        hero:{ hi:'Hi, There!', imPrefix:"I'm", role:'Fullstack Developer', eyebrow:'Software Engineering Student', tagline:"// Building interfaces & systems with a developer's precision, and a gamer's curiosity for technology.", ctaPortfolio:'View Portfolio', ctaCV:'Download CV', scroll:'SCROLL' },
+        hero:{ hi:'Hi, There!', imPrefix:"I'm", role:'Fullstack Developer', eyebrow:'Software Engineering Student', tagline:"Building interfaces & systems with a developer's precision, and a gamer's curiosity for technology.", ctaPortfolio:'View Portfolio', ctaCV:'Download CV', scroll:'SCROLL' },
         stats:{ sem:'Semester', proj:'Projects', stack:'Tech Stack', org:'Organizations' },
         about:{ eyebrow:'About Me', title:'Quick Profile',
           p1:'A <strong>Software Engineering</strong> student at Telkom University, passionate about <strong>front-end</strong> development and exploring different programming languages.',

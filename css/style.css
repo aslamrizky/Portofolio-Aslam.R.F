@@ -274,14 +274,14 @@ html[data-theme="light"] .theme-toggle .knob{ transform:translateX(20px); backgr
 .hero-hi{
   font-family:var(--font-display);
   font-weight:600;
-  font-size:18px;
+  font-size:40px;
   color:var(--text-primary);
   margin-bottom:14px;
 }
 .hero-name-line{
   font-family:var(--font-display);
   font-weight:700;
-  font-size:clamp(32px, 5vw, 52px);
+  font-size:clamp(35px, 5vw, 60px);
   line-height:1.15;
   letter-spacing:-.01em;
   margin-bottom:22px;
@@ -301,7 +301,7 @@ html[data-theme="light"] .theme-toggle .knob{ transform:translateX(20px); backgr
 
 .hero-tagline{
   font-family:var(--font-body);
-  font-size:16px; letter-spacing:.005em;
+  font-size:20px; letter-spacing:.005em;
   color:var(--text-secondary);
   margin-bottom:28px;
   max-width:480px;
