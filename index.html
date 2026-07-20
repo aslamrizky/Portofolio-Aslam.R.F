@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/devicon/2.15.1/devicon.min.css">
 <link rel="stylesheet" href="css/style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.21/vue.global.prod.min.js"></script>
@@ -71,29 +71,23 @@
   <!-- HERO -->
   <section id="home" class="hero">
     <div class="wrap hero-inner">
-      <div class="hero-bigtext" aria-hidden="true">DEVELOPER</div>
-
-      <div class="hero-visual">
-        <div class="hero-photo-glow"></div>
-        <div class="hero-photo"><img src="img/profile-hd.png" alt="Aslam Rizky Fadillah"></div>
-        <div class="hero-overlay-text">
-          <div class="eyebrow">{{ t.hero.eyebrow }}</div>
-          <h1 class="hero-name">Aslam Rizky<br><span class="hl">Fadillah</span></h1>
-        </div>
-      </div>
-
-      <div class="hero-content">
+      <div class="hero-text-col">
+        <div class="hero-hi">{{ t.hero.hi }}</div>
+        <h1 class="hero-name-line">{{ t.hero.imPrefix }} <span class="hl">{{ typedText }}</span><span class="typed-cursor">|</span></h1>
         <p class="hero-tagline">{{ t.hero.tagline }}</p>
+        <div class="hero-social">
+          <a href="https://github.com/aslamrizky" target="_blank" rel="noopener" data-hover><i class="devicon-github-original"></i></a>
+          <a href="mailto:aslamrizky81@gmail.com" data-hover><i class="fa-envelope">@</i></a>
+          <a href="https://instagram.com/aslam.rizky04" target="_blank" rel="noopener" data-hover>IG</a>
+        </div>
         <div class="hero-cta">
           <a href="#portfolio" class="btn btn-primary" data-hover>{{ t.hero.ctaPortfolio }}</a>
           <a :href="cvHref" download="CV_Aslam_Rizky_Fadillah.pdf" class="btn btn-outline" data-hover>{{ t.hero.ctaCV }}</a>
         </div>
       </div>
 
-      <div class="hero-social hero-social-vertical">
-        <a href="https://github.com/aslamrizky" target="_blank" rel="noopener" data-hover><i class="devicon-github-original"></i></a>
-        <a href="mailto:aslamrizky81@gmail.com" data-hover><i class="fa-envelope">@</i></a>
-        <a href="https://instagram.com/aslam.rizky04" target="_blank" rel="noopener" data-hover>IG</a>
+      <div class="hero-photo-col">
+        <div class="hero-photo"><img src="img/profile-hd.png" alt="Aslam Rizky Fadillah"></div>
       </div>
     </div>
     <div class="scroll-cue"><span>{{ t.hero.scroll }}</span><div class="line"></div></div>

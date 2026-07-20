@@ -17,6 +17,8 @@ createApp({
       toastShow:false,
       toastMsg:'',
       cvHref:'#',
+      fullName:'Aslam Rizky Fadillah',
+      typedText:'',
       selectedProject:null,
       lightboxImage:null,
       statsCount:{ sem:6, proj:3, stack:10, org:2 },
@@ -113,7 +115,7 @@ createApp({
     const translations = {
       id:{
         nav:{ home:'Home', about:'About', experience:'Experience', portfolio:'Portfolio', contact:'Contact' },
-        hero:{ eyebrow:'Software Engineering Student', tagline:'// Membangun antarmuka & sistem dengan presisi seorang developer, dan rasa ingin tahu seorang gamer terhadap teknologi.', ctaPortfolio:'Lihat Portofolio', ctaCV:'Unduh CV', scroll:'SCROLL' },
+        hero:{ hi:'Hai, Selamat Datang!', imPrefix:'Saya', role:'Fullstack Developer', eyebrow:'Software Engineering Student', tagline:'// Membangun antarmuka & sistem dengan presisi seorang developer, dan rasa ingin tahu seorang gamer terhadap teknologi.', ctaPortfolio:'Lihat Portofolio', ctaCV:'Unduh CV', scroll:'SCROLL' },
         stats:{ sem:'Semester', proj:'Proyek', stack:'Tech Stack', org:'Organisasi' },
         about:{ eyebrow:'Tentang Saya', title:'Profil Ringkas',
           p1:'Mahasiswa <strong>Software Engineering</strong> di Telkom University yang bersemangat dalam pengembangan <strong>front-end</strong> dan eksplorasi berbagai bahasa pemrograman.',
@@ -135,7 +137,7 @@ createApp({
       },
       en:{
         nav:{ home:'Home', about:'About', experience:'Experience', portfolio:'Portfolio', contact:'Contact' },
-        hero:{ eyebrow:'Software Engineering Student', tagline:"// Building interfaces & systems with a developer's precision, and a gamer's curiosity for technology.", ctaPortfolio:'View Portfolio', ctaCV:'Download CV', scroll:'SCROLL' },
+        hero:{ hi:'Hi, There!', imPrefix:"I'm", role:'Fullstack Developer', eyebrow:'Software Engineering Student', tagline:"// Building interfaces & systems with a developer's precision, and a gamer's curiosity for technology.", ctaPortfolio:'View Portfolio', ctaCV:'Download CV', scroll:'SCROLL' },
         stats:{ sem:'Semester', proj:'Projects', stack:'Tech Stack', org:'Organizations' },
         about:{ eyebrow:'About Me', title:'Quick Profile',
           p1:'A <strong>Software Engineering</strong> student at Telkom University, passionate about <strong>front-end</strong> development and exploring different programming languages.',
@@ -159,6 +161,7 @@ createApp({
     const t = computed(()=> translations[state.lang]);
     function toggleLang(){
       state.lang = state.lang === 'id' ? 'en' : 'id';
+      startTyping();
     }
 
     const projectsView = computed(()=> state.projects.map(p => ({
@@ -172,6 +175,39 @@ createApp({
       role: exp.role[state.lang],
       desc: exp.desc[state.lang],
     })));
+
+    let typingTimer = null;
+    function startTyping(){
+      if(typingTimer) clearTimeout(typingTimer);
+      const phrases = [state.fullName, t.value.hero.role];
+      let phraseIndex = 0;
+      let charIndex = 0;
+      let deleting = false;
+
+      function tick(){
+        const current = phrases[phraseIndex];
+        if(!deleting){
+          charIndex++;
+          state.typedText = current.slice(0, charIndex);
+          if(charIndex === current.length){
+            deleting = true;
+            typingTimer = setTimeout(tick, 1500);
+            return;
+          }
+        } else {
+          charIndex--;
+          state.typedText = current.slice(0, charIndex);
+          if(charIndex === 0){
+            deleting = false;
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+            typingTimer = setTimeout(tick, 400);
+            return;
+          }
+        }
+        typingTimer = setTimeout(tick, deleting ? 45 : 90);
+      }
+      tick();
+    }
 
     function toggleTheme(){
       state.theme = state.theme === 'dark' ? 'light' : 'dark';
@@ -208,6 +244,7 @@ createApp({
 
     onMounted(()=>{
       document.documentElement.setAttribute('data-theme', state.theme);
+      startTyping();
 
       // loading screen
       document.documentElement.style.overflow = 'hidden';
