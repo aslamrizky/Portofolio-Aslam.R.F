@@ -1,5 +1,85 @@
 const { createApp, reactive, toRefs, onMounted, computed } = Vue;
 
+// -------------------------------------------------------------
+// Background particle canvas — tech/game themed, perf-conscious
+// - Density scales down on small screens
+// - Pauses via requestAnimationFrame when tab is hidden
+// - Reads colors from CSS variables so it follows dark/light theme
+// -------------------------------------------------------------
+function initBgParticles(){
+  const canvas = document.getElementById('bgParticles');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let width, height, dpr, particles = [], rafId = null, running = true;
+
+  function getAccentRGB(){
+    const raw = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim();
+    return raw || '59,130,246';
+  }
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = canvas.width = window.innerWidth * dpr;
+    height = canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    const density = window.innerWidth < 700 ? 0.045 : 0.09; // particles per 1000px^2, tuned for perf
+    const count = reduceMotion ? 0 : Math.min(90, Math.round((window.innerWidth * window.innerHeight) / 10000 * density * 10));
+    particles = Array.from({ length: count }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.25 * dpr,
+      vy: (Math.random() - 0.5) * 0.25 * dpr,
+      r: (Math.random() * 1.4 + 0.6) * dpr,
+    }));
+  }
+
+  function tick(){
+    if(!running){ rafId = null; return; }
+    ctx.clearRect(0, 0, width, height);
+    const rgb = getAccentRGB();
+    const linkDist = 140 * dpr;
+
+    for(let i = 0; i < particles.length; i++){
+      const p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < 0 || p.x > width) p.vx *= -1;
+      if(p.y < 0 || p.y > height) p.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${rgb},.55)`;
+      ctx.fill();
+
+      for(let j = i + 1; j < particles.length; j++){
+        const q = particles[j];
+        const dx = p.x - q.x, dy = p.y - q.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if(dist < linkDist){
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(${rgb},${.12 * (1 - dist / linkDist)})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+
+  resize();
+  if(!reduceMotion) rafId = requestAnimationFrame(tick);
+
+  window.addEventListener('resize', resize, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    running = document.visibilityState === 'visible';
+    if(running && !rafId && !reduceMotion) rafId = requestAnimationFrame(tick);
+  });
+}
+
 async function loadTranslations(){
   try {
     const res = await fetch('translations.json');
@@ -22,6 +102,7 @@ createApp({
       menuOpen:false,
       activeTab:'projects',
       activeSection:'home',
+      bgZone:'hero',
       isHovering:false,
       cursorStyle:{ transform:'translate(-100px,-100px)' },
       toastShow:false,
@@ -258,8 +339,9 @@ createApp({
       }, { threshold:0.15 });
       document.querySelectorAll('.reveal, .reveal-stagger').forEach(el=> io.observe(el));
 
-      // navbar scrollspy
+      // navbar scrollspy + background zone mapping
       const sectionIds = ['home','about','experience','portfolio','contact'];
+      const bgZoneMap = { home:'hero', about:'about', experience:'about', portfolio:'projects', contact:'contact' };
       const sections = sectionIds
         .map(id => document.getElementById(id))
         .filter(Boolean);
@@ -267,10 +349,14 @@ createApp({
         entries.forEach(entry=>{
           if(entry.isIntersecting){
             state.activeSection = entry.target.id;
+            state.bgZone = bgZoneMap[entry.target.id] || 'hero';
           }
         });
       }, { threshold:0, rootMargin:'-45% 0px -50% 0px' });
       sections.forEach(sec => spy.observe(sec));
+
+      // background particle canvas — lightweight, capped for perf, pauses when tab hidden
+      initBgParticles();
 
       // close drawer
       window.addEventListener('keydown', (e)=>{

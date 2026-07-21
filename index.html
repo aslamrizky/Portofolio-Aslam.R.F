@@ -31,12 +31,40 @@
     <svg class="glass-cursor-arrow" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
       <path d="M4 2 L4 26 L11 20 L15.5 29 L19.5 27 L15 18 L23 18 Z"/>
     </svg>
-    <span class="glass-cursor-bubble"></span>
   </div>
 
-  <div class="bg-grid"></div>
-  <div class="bg-glow g1"></div>
-  <div class="bg-glow g2"></div>
+  <!-- SITE BACKGROUND — layered, scroll-reactive, theme-aware -->
+  <div class="site-bg" :data-bg-zone="bgZone" aria-hidden="true">
+    <canvas class="bg-particles" id="bgParticles"></canvas>
+    <div class="bg-grid"></div>
+    <div class="bg-planes" aria-hidden="true">
+      <svg class="bg-plane bg-plane-1" viewBox="0 0 24 24"><path d="M2 12 L22 3 L14 12 L22 21 Z"/></svg>
+      <svg class="bg-plane bg-plane-2" viewBox="0 0 24 24"><path d="M2 12 L22 3 L14 12 L22 21 Z"/></svg>
+      <svg class="bg-plane bg-plane-3" viewBox="0 0 24 24"><path d="M2 12 L22 3 L14 12 L22 21 Z"/></svg>
+    </div>
+    <svg class="bg-circuit" viewBox="0 0 1000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="circuit-line" d="M0,140 H240 V320 H540 V90 H1000"/>
+      <path class="circuit-line" d="M0,560 H180 V740 H480 V920 H1000"/>
+      <path class="circuit-line" d="M130,0 V240 H420 V0"/>
+      <path class="circuit-line" d="M760,1000 V760 H900 V560"/>
+      <circle class="circuit-node" cx="240" cy="140" r="4"/>
+      <circle class="circuit-node" cx="540" cy="320" r="4"/>
+      <circle class="circuit-node" cx="180" cy="560" r="4"/>
+      <circle class="circuit-node" cx="480" cy="740" r="4"/>
+      <circle class="circuit-node" cx="420" cy="240" r="4"/>
+      <circle class="circuit-node" cx="900" cy="560" r="4"/>
+    </svg>
+    <div class="bg-dots"></div>
+    <div class="bg-blob blob-a"></div>
+    <div class="bg-blob blob-b"></div>
+    <div class="bg-polys">
+      <span class="poly poly-1"></span>
+      <span class="poly poly-2"></span>
+      <span class="poly poly-3"></span>
+      <span class="poly poly-4"></span>
+    </div>
+    <div class="bg-vignette"></div>
+  </div>
 
   <!-- NAVBAR -->
   <header class="nav">
