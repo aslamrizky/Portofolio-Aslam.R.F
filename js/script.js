@@ -1,11 +1,5 @@
 const { createApp, reactive, toRefs, onMounted, computed } = Vue;
 
-// -------------------------------------------------------------
-// Background particle canvas — tech/game themed, perf-conscious
-// - Density scales down on small screens
-// - Pauses via requestAnimationFrame when tab is hidden
-// - Reads colors from CSS variables so it follows dark/light theme
-// -------------------------------------------------------------
 function initBgParticles(){
   const canvas = document.getElementById('bgParticles');
   if(!canvas) return;
@@ -25,7 +19,7 @@ function initBgParticles(){
     height = canvas.height = window.innerHeight * dpr;
     canvas.style.width = window.innerWidth + 'px';
     canvas.style.height = window.innerHeight + 'px';
-    const density = window.innerWidth < 700 ? 0.045 : 0.09; // particles per 1000px^2, tuned for perf
+    const density = window.innerWidth < 700 ? 0.045 : 0.09;
     const count = reduceMotion ? 0 : Math.min(90, Math.round((window.innerWidth * window.innerHeight) / 10000 * density * 10));
     particles = Array.from({ length: count }, () => ({
       x: Math.random() * width,
@@ -300,12 +294,10 @@ createApp({
     onMounted(()=>{
       document.documentElement.setAttribute('data-theme', state.theme);
 
-      // translations sudah tersedia sebelum app di-mount, tinggal terapkan bahasa tersimpan
       const savedLang = localStorage.getItem('lang');
       if (savedLang) state.lang = savedLang;
       startTyping();
 
-      // loading screen
       document.documentElement.style.overflow = 'hidden';
       const GREET_INTERVAL = 500;
       let step = 0;
@@ -320,7 +312,6 @@ createApp({
         }
       }, GREET_INTERVAL);
 
-      // custom cursor — arrow tip aligns with the actual pointer position
       window.addEventListener('mousemove', (e)=>{
         state.cursorStyle = { transform:`translate(${e.clientX - 4}px, ${e.clientY - 2}px)` };
       });
@@ -329,7 +320,6 @@ createApp({
         el.addEventListener('mouseleave', ()=> state.isHovering = false);
       });
 
-      // scroll reveal
       const io = new IntersectionObserver((entries)=>{
         entries.forEach(entry=>{
           if(entry.isIntersecting){
@@ -339,7 +329,6 @@ createApp({
       }, { threshold:0.15 });
       document.querySelectorAll('.reveal, .reveal-stagger').forEach(el=> io.observe(el));
 
-      // navbar scrollspy + background zone mapping
       const sectionIds = ['home','about','experience','portfolio','contact'];
       const bgZoneMap = { home:'hero', about:'about', experience:'about', portfolio:'projects', contact:'contact' };
       const sections = sectionIds
@@ -354,11 +343,8 @@ createApp({
         });
       }, { threshold:0, rootMargin:'-45% 0px -50% 0px' });
       sections.forEach(sec => spy.observe(sec));
-
-      // background particle canvas — lightweight, capped for perf, pauses when tab hidden
       initBgParticles();
 
-      // close drawer
       window.addEventListener('keydown', (e)=>{
         if(e.key === 'Escape'){
           closeProject();
