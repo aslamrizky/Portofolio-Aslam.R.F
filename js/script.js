@@ -23,8 +23,7 @@ createApp({
       activeTab:'projects',
       activeSection:'home',
       isHovering:false,
-      dotStyle:{ transform:'translate(-50%,-50%) translate(-100px,-100px)' },
-      ringStyle:{ transform:'translate(-50%,-50%) translate(-100px,-100px)' },
+      cursorStyle:{ transform:'translate(-100px,-100px)' },
       toastShow:false,
       toastMsg:'',
       cvHref:'#',
@@ -240,10 +239,9 @@ createApp({
         }
       }, GREET_INTERVAL);
 
-      // custom cursor
+      // custom cursor — arrow tip aligns with the actual pointer position
       window.addEventListener('mousemove', (e)=>{
-        state.dotStyle = { transform:`translate(-50%,-50%) translate(${e.clientX}px, ${e.clientY}px)` };
-        state.ringStyle = { transform:`translate(-50%,-50%) translate(${e.clientX}px, ${e.clientY}px)`, ...(state.isHovering ? {} : {}) };
+        state.cursorStyle = { transform:`translate(${e.clientX - 4}px, ${e.clientY - 2}px)` };
       });
       document.querySelectorAll('[data-hover], a, button').forEach(el=>{
         el.addEventListener('mouseenter', ()=> state.isHovering = true);

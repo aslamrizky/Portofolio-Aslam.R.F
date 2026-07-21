@@ -27,8 +27,12 @@
     </div>
   </div>
 
-  <div class="cursor-dot" :style="dotStyle"></div>
-  <div class="cursor-ring" :class="{hovering:isHovering}" :style="ringStyle"></div>
+  <div class="glass-cursor" :class="{hovering:isHovering}" :style="cursorStyle">
+    <svg class="glass-cursor-arrow" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 2 L4 26 L11 20 L15.5 29 L19.5 27 L15 18 L23 18 Z"/>
+    </svg>
+    <span class="glass-cursor-bubble"></span>
+  </div>
 
   <div class="bg-grid"></div>
   <div class="bg-glow g1"></div>
