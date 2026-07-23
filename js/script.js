@@ -19,7 +19,7 @@ function initBgParticles(){
     height = canvas.height = window.innerHeight * dpr;
     canvas.style.width = window.innerWidth + 'px';
     canvas.style.height = window.innerHeight + 'px';
-    const density = window.innerWidth < 700 ? 0.045 : 0.09;
+    const density = window.innerWidth < 700 ? 0.045 : 0.09; // particles per 1000px^2, tuned for perf
     const count = reduceMotion ? 0 : Math.min(90, Math.round((window.innerWidth * window.innerHeight) / 10000 * density * 10));
     particles = Array.from({ length: count }, () => ({
       x: Math.random() * width,
@@ -80,11 +80,12 @@ async function loadTranslations(){
     return await res.json();
   } catch (err) {
     console.error('Gagal memuat translations.json:', err);
-    return { id: {}, en: {} };
+    return { id: {}, en: {}, content: {} };
   }
 }
 
 loadTranslations().then((translationsData) => {
+const content = translationsData.content || {};
 createApp({
   setup(){
     const state = reactive({
@@ -92,7 +93,7 @@ createApp({
       lang:'id',
       loading:true,
       greetIndex:0,
-      greetings:['Halo','Hello','Hola','Bonjour','こんにちは'],
+      greetings: content.greetings || [],
       menuOpen:false,
       activeTab:'projects',
       activeSection:'home',
@@ -102,87 +103,18 @@ createApp({
       toastShow:false,
       toastMsg:'',
       cvHref:'#',
-      fullName:'Aslam Rizky Fadillah',
+      fullName: content.fullName || '',
       typedText:'',
       selectedProject:null,
       lightboxImage:null,
-      statsCount:{ sem:6, proj:3, stack:10, org:2 },
+      statsCount: content.stats || { sem:0, proj:0, stack:0, org:0 },
       form:{ name:'', email:'', message:'' },
-      coreSkills:['HTML','CSS','JavaScript','React.js','Python','Java','C#','Laravel','Flutter','Dart'],
-      softSkills:['Komunikasi','Kerja Tim','Manajemen Waktu','Problem Solving'],
-      experience:[
-        { year:'2025', org:'Tazkia University',
-          role:{ id:'IT System Analyst Intern', en:'IT System Analyst Intern' },
-          desc:{ id:'Merancang alur kerja (workflow) sistem menggunakan flow chart untuk memastikan digitalisasi proses penjaminan mutu berjalan efisien dan sesuai standar akreditasi.',
-                 en:'Designed system workflows using flowcharts to ensure the digitalization of the quality-assurance process ran efficiently and met accreditation standards.' } },
-        { year:'2024', org:'PMB (Penerimaan Mahasiswa Baru)',
-          role:{ id:'Team Member Software Engineering', en:'Team Member, Software Engineering' },
-          desc:{ id:'Berkontribusi pada penerimaan mahasiswa baru dengan memberikan bimbingan serta meningkatkan pengalaman orientasi bagi mahasiswa baru.',
-                 en:'Contributed to the new-student admissions process by providing guidance and improving the orientation experience for incoming students.' } },
-        { year:'2024 — Sekarang', org:'Al Fath Organization',
-          role:{ id:'Team Member', en:'Team Member' },
-          desc:{ id:'Berpartisipasi aktif dalam manajemen kesekretariatan dan administrasi kegiatan dakwah Islam organisasi.',
-                 en:"Actively participated in the organization's secretarial management and administration of Islamic outreach (dakwah) activities." } },
-      ],
-      projects:[
-        {
-          title:{ id:'Sistem Inventaris Masjid', en:'Mosque Inventory System' },
-          image:'img/proj-masjid.jpg',
-          desc:{ id:'Sistem manajemen inventaris berbasis web untuk Masjid Syamsul Ulum guna memfasilitasi pelacakan aset secara digital, lengkap dengan fitur peminjaman & pemantauan stok real-time.',
-                 en:'A web-based inventory management system for Masjid Syamsul Ulum that digitizes asset tracking, complete with item borrowing and real-time stock monitoring features.' },
-          fullDesc:{ id:'Sistem manajemen inventaris berbasis web yang dibangun untuk Masjid Syamsul Ulum. Aplikasi ini memfasilitasi pelacakan aset masjid secara digital dan terpusat, lengkap dengan fitur pencatatan peminjaman barang, riwayat transaksi, serta pemantauan stok secara real-time agar pengurus masjid dapat mengelola inventaris dengan lebih rapi dan transparan.',
-                     en:'A web-based inventory management system built for Masjid Syamsul Ulum. The app digitizes and centralizes asset tracking, complete with item-borrowing records, transaction history, and real-time stock monitoring — helping mosque administrators manage inventory in a more organized and transparent way.' },
-          tech:[
-            { name:'Laravel', icon:'devicon-laravel-plain colored' },
-            { name:'PHP', icon:'devicon-php-plain colored' },
-            { name:'Blade', icon:'devicon-laravel-plain colored' },
-            { name:'JavaScript', icon:'devicon-javascript-plain colored' },
-          ],
-        },
-        {
-          title:{ id:'Aplikasi Keuangan Mobile', en:'Mobile Finance App' },
-          image:'img/proj-keuangan.jpg',
-          desc:{ id:'Aplikasi seluler lintas platform untuk manajemen keuangan pribadi dengan fitur pelacakan pendapatan, pengeluaran, dan pelaporan transaksi.',
-                 en:'A cross-platform mobile app for personal finance management, featuring income and expense tracking along with transaction reports.' },
-          fullDesc:{ id:'Aplikasi seluler lintas platform (Android & iOS) untuk membantu pengguna mengelola keuangan pribadi. Dilengkapi fitur pencatatan pendapatan dan pengeluaran, kategori transaksi, serta laporan ringkasan keuangan dalam bentuk grafik agar pengguna lebih mudah memahami arus kas hariannya.',
-                     en:'A cross-platform mobile app (Android & iOS) that helps users manage their personal finances. It includes income and expense logging, transaction categories, and visual financial summary reports so users can easily understand their daily cash flow.' },
-          tech:[
-            { name:'Flutter', icon:'devicon-flutter-plain colored' },
-            { name:'Dart', icon:'devicon-dart-plain colored' },
-          ],
-        },
-        {
-          title:{ id:'Pasar Barang Bekas', en:'Second-Hand Marketplace' },
-          image:'img/proj-pasar.jpg',
-          desc:{ id:'Aplikasi pasar berbasis konsol dengan prinsip OOP untuk transaksi jual-beli barang bekas secara terstruktur, termasuk pengelolaan daftar produk.',
-                 en:'A console-based marketplace app built with OOP principles for structured buying and selling of second-hand goods, including product-listing management.' },
-          fullDesc:{ id:'Aplikasi berbasis konsol yang mensimulasikan pasar jual-beli barang bekas dengan menerapkan prinsip Object-Oriented Programming secara konsisten. Mendukung pengelolaan daftar produk, proses transaksi jual-beli, serta validasi data agar alur bisnis sederhana ini tetap terstruktur dan mudah dikembangkan.',
-                     en:'A console-based application that simulates a second-hand marketplace by consistently applying Object-Oriented Programming principles. It supports product-listing management, buy/sell transactions, and data validation to keep this simple business flow structured and easy to extend.' },
-          tech:[
-            { name:'C#', icon:'devicon-csharp-plain colored' },
-            { name:'.NET', icon:'devicon-dot-net-plain' },
-          ],
-        },
-      ],
-      techStack:[
-        { name:'HTML5', icon:'devicon-html5-plain colored' },
-        { name:'CSS3', icon:'devicon-css3-plain colored' },
-        { name:'JavaScript', icon:'devicon-javascript-plain colored' },
-        { name:'React', icon:'devicon-react-original colored' },
-        { name:'Python', icon:'devicon-python-plain colored' },
-        { name:'Java', icon:'devicon-java-plain colored' },
-        { name:'C#', icon:'devicon-csharp-plain colored' },
-        { name:'Laravel', icon:'devicon-laravel-plain colored' },
-        { name:'Flutter', icon:'devicon-flutter-plain colored' },
-        { name:'Dart', icon:'devicon-dart-plain colored' },
-        { name:'Git', icon:'devicon-git-plain colored' },
-        { name:'GitHub', icon:'devicon-github-original' },
-      ],
-      certificates:[
-        { title:'Web Development with Laravel', org:'Dicoding Indonesia', year:'2025', image:'img/cert-laravel.jpg' },
-        { title:'Flutter & Dart Mobile Development', org:'Google Developer Group', year:'2024', image:'img/cert-flutter.jpg' },
-        { title:'Object-Oriented Programming Fundamentals', org:'Telkom University', year:'2024', image:'img/cert-oop.jpg' },
-      ],
+      coreSkills: content.coreSkills || [],
+      softSkills: (content.softSkills && content.softSkills.id) || [],
+      experience: content.experience || [],
+      projects: content.projects || [],
+      techStack: content.techStack || [],
+      certificates: content.certificates || [],
     });
 
     const TECH_ROW_SIZE = 6;
@@ -209,6 +141,8 @@ createApp({
     function toggleLang() {
       state.lang = state.lang === 'id' ? 'en' : 'id';
       localStorage.setItem('lang', state.lang);
+      const sk = content.softSkills || {};
+      state.softSkills = sk[state.lang] || sk.id || [];
       startTyping();
     }
 
@@ -265,10 +199,13 @@ createApp({
 
     function sendMessage(){
       const { name, email, message } = state.form;
-      const subject = encodeURIComponent('Pesan dari Portofolio — ' + name);
+      const mailto = content.mailto || {};
+      const subjectPrefix = (mailto.subjectPrefix && mailto.subjectPrefix[state.lang]) || '';
+      const toastMsg = (mailto.toast && mailto.toast[state.lang]) || '';
+      const subject = encodeURIComponent(subjectPrefix + name);
       const body = encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')');
-      window.location.href = `mailto:aslamrizky81@gmail.com?subject=${subject}&body=${body}`;
-      state.toastMsg = 'Membuka aplikasi email kamu...';
+      window.location.href = `mailto:${mailto.to || ''}?subject=${subject}&body=${body}`;
+      state.toastMsg = toastMsg;
       state.toastShow = true;
       setTimeout(()=> state.toastShow = false, 3200);
       state.form = { name:'', email:'', message:'' };
@@ -294,10 +231,14 @@ createApp({
     onMounted(()=>{
       document.documentElement.setAttribute('data-theme', state.theme);
 
+      // translations sudah tersedia sebelum app di-mount, tinggal terapkan bahasa tersimpan
       const savedLang = localStorage.getItem('lang');
       if (savedLang) state.lang = savedLang;
+      const sk = content.softSkills || {};
+      state.softSkills = sk[state.lang] || sk.id || [];
       startTyping();
 
+      // loading screen
       document.documentElement.style.overflow = 'hidden';
       const GREET_INTERVAL = 500;
       let step = 0;
@@ -312,6 +253,7 @@ createApp({
         }
       }, GREET_INTERVAL);
 
+      // custom cursor — arrow tip aligns with the actual pointer position
       window.addEventListener('mousemove', (e)=>{
         state.cursorStyle = { transform:`translate(${e.clientX - 4}px, ${e.clientY - 2}px)` };
       });
@@ -320,6 +262,7 @@ createApp({
         el.addEventListener('mouseleave', ()=> state.isHovering = false);
       });
 
+      // scroll reveal
       const io = new IntersectionObserver((entries)=>{
         entries.forEach(entry=>{
           if(entry.isIntersecting){
@@ -329,6 +272,7 @@ createApp({
       }, { threshold:0.15 });
       document.querySelectorAll('.reveal, .reveal-stagger').forEach(el=> io.observe(el));
 
+      // navbar scrollspy + background zone mapping
       const sectionIds = ['home','about','experience','portfolio','contact'];
       const bgZoneMap = { home:'hero', about:'about', experience:'about', portfolio:'projects', contact:'contact' };
       const sections = sectionIds
@@ -343,8 +287,11 @@ createApp({
         });
       }, { threshold:0, rootMargin:'-45% 0px -50% 0px' });
       sections.forEach(sec => spy.observe(sec));
+
+      // background particle canvas — lightweight, capped for perf, pauses when tab hidden
       initBgParticles();
 
+      // close drawer
       window.addEventListener('keydown', (e)=>{
         if(e.key === 'Escape'){
           closeProject();
