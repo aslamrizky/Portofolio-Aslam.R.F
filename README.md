@@ -2,7 +2,7 @@
 
 <img src="img/profile-hd.png" width="120" style="border-radius:50%;border:2px solid #3D7EFF;" alt="Aslam Rizky Fadillah"/>
 
-<h1>&lt; ARF /&gt;</h1>
+<h1>Aslam Rizky Fadillah</h1>
 
 <a href="https://readme-typing-svg.demolab.com">
   <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=20&duration=2600&pause=900&color=3D7EFF&center=true&vCenter=true&width=560&lines=Fullstack+Developer;Software+Engineering+Student;Game-Tech+Enthusiast;Membangun+antarmuka+%26+sistem+dengan+presisi." alt="Typing SVG"/>
@@ -194,9 +194,6 @@ Semua teks dan konten dinamis (proyek, tech stack, sertifikat, pengalaman, stati
 - [x] Dark/Light mode
 - [x] Dwibahasa ID/EN
 - [x] Floating capsule navbar
-- [ ] Blog/Artikel section
-- [ ] Integrasi CMS headless untuk konten
-- [ ] PWA support
 
 ## 📬 Kontak
 
