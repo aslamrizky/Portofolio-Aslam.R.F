@@ -143,6 +143,26 @@
         <div class="stat-cell"><div class="stat-num">{{ statsCount.proj }}+</div><div class="stat-label">{{ t.stats.proj }}</div></div>
         <div class="stat-cell"><div class="stat-num">{{ statsCount.stack }}+</div><div class="stat-label">{{ t.stats.stack }}</div></div>
         <div class="stat-cell"><div class="stat-num">{{ statsCount.org }}</div><div class="stat-label">{{ t.stats.org }}</div></div>
+        <div class="stat-cell"><div class="stat-num">{{ certificates.length }}</div><div class="stat-label">{{ t.stats.cert }}</div></div>
+        <div class="stat-cell"><div class="stat-num">{{ experienceView.length }}+</div><div class="stat-label">{{ t.stats.exp }}</div></div>
+      </div>
+
+      <div class="stats-tech">
+        <div class="stats-tech-label">{{ t.portfolio.tabTechstack }}</div>
+        <div class="tech-marquee">
+          <div class="tech-row" :class="row.dir" v-for="(row, idx) in techRows" :key="idx">
+            <div class="tech-row-track">
+              <div class="tech-tile" v-for="t in row.items" :key="t.name+'-a'">
+                <i :class="t.icon"></i>
+                <span>{{ t.name }}</span>
+              </div>
+              <div class="tech-tile" v-for="t in row.items" :key="t.name+'-b'" aria-hidden="true">
+                <i :class="t.icon"></i>
+                <span>{{ t.name }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -207,7 +227,6 @@
 
       <div class="tab-switch reveal">
         <button class="tab-btn" :class="{active:activeTab==='projects'}" @click="activeTab='projects'" data-hover>{{ t.portfolio.tabProjects }}</button>
-        <button class="tab-btn" :class="{active:activeTab==='techstack'}" @click="activeTab='techstack'" data-hover>{{ t.portfolio.tabTechstack }}</button>
         <button class="tab-btn" :class="{active:activeTab==='certificates'}" @click="activeTab='certificates'" data-hover>{{ t.portfolio.tabCertificates }}</button>
       </div>
 
@@ -220,20 +239,6 @@
               <div class="proj-desc">{{ p.desc }}</div>
               <div class="proj-tech-icons">
                 <div class="tech-icon-badge" v-for="t in p.tech" :key="t.name" :title="t.name"><i :class="t.icon"></i></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="tech-marquee" v-else-if="activeTab==='techstack'" key="t">
-          <div class="tech-row" :class="row.dir" v-for="(row, idx) in techRows" :key="idx">
-            <div class="tech-row-track">
-              <div class="tech-tile" v-for="t in row.items" :key="t.name+'-a'">
-                <i :class="t.icon"></i>
-                <span>{{ t.name }}</span>
-              </div>
-              <div class="tech-tile" v-for="t in row.items" :key="t.name+'-b'" aria-hidden="true">
-                <i :class="t.icon"></i>
-                <span>{{ t.name }}</span>
               </div>
             </div>
           </div>
